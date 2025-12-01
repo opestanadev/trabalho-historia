@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grécia Antiga Interativa</title>
+
+    <style>
+        :root {
+            --cor-primaria: #004d40;
+            --cor-secundaria: #ffcc80;
+            --cor-fundo: #f5f5f5;
+            --cor-texto: #333;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: var(--cor-fundo);
+            color: var(--cor-texto);
+            margin: 0;
+        }
+
+        header {
+            background: var(--cor-primaria);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        #mapa-grecia {
+            flex: 2;
+            position: relative;
+            border: 3px solid var(--cor-secundaria);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #d0dde8;
+        }
+
+        #mapa-grecia img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* SVG fixo e alinhado ao mapa */
+        #svg-mapa {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .ponto-cidade {
+            fill: #e63946;
+            stroke: white;
+            stroke-width: 2;
+            cursor: pointer;
+            /* hitbox maior para facilitar clique */
+            pointer-events: all;
+        }
+
+        .ponto-cidade:hover {
+            fill: #ff6b6b;
+        }
+
+        .nome-cidade {
+            fill: #000;
+            font-size: 14px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px white;
+            pointer-events: none;
+        }
+
+        #conteudo-cidade {
+            flex: 1;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            height: 550px;
+            overflow-y: auto;
+        }
+
+        #conteudo-cidade h2 {
+            color: var(--cor-primaria);
+            border-bottom: 2px solid var(--cor-secundaria);
+            padding-bottom: 8px;
+        }
+
+        #conteudo-cidade p {
+            line-height: 1.6;
+            font-size: 15px;
+            text-align: justify;
+        }
+
+        footer {
+            background: var(--cor-primaria);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Grécia Antiga: Mapa Interativo</h1>
+        <p>Clique nos pontos do mapa para ler uma sinopse concisa sobre cada cidade.</p>
+    </header>
+
+    <main class="container">
+        <div id="mapa-grecia">
+            <img src="https://i.pinimg.com/736x/5d/32/bd/5d32bd4968c797e9ae8f0032c130855b.jpg" alt="Mapa da Grécia">
+
+            <svg id="svg-mapa" viewBox="0 0 800 600" preserveAspectRatio="none">
+                <circle class="ponto-cidade" data-cidade="Atenas" cx="340" cy="315" r="7"></circle>
+
+                <circle class="ponto-cidade" data-cidade="Esparta" cx="230" cy="385" r="7"></circle>
+
+                <circle class="ponto-cidade" data-cidade="Corinto" cx="284" cy="315" r="7"></circle>
+
+                <circle class="ponto-cidade" data-cidade="Delfos" cx="255" cy="260" r="7"></circle>
+
+                <circle class="ponto-cidade" data-cidade="Olímpia" cx="195" cy="342" r="7"></circle>
+
+                <circle class="ponto-cidade" data-cidade="Tebas" cx="305" cy="290" r="7"></circle>
+            </svg>
+        </div>
+
+        <div id="conteudo-cidade">
+            <h2>Selecione uma cidade</h2>
+            <p>Clique em um ponto do mapa para visualizar sua sinopse.</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>© Mapa Interativo da Grécia Antiga<br>
+            DESENVOLVIDO POR: Esdras e Kevyn
+        </p>
+    </footer>
+
+   <script>
+    const textos = {
+        "Atenas": `
+            Atenas foi o berço da democracia e um dos maiores centros culturais da Antiguidade.
+            Sua sociedade valorizava a filosofia, o teatro, a arte, a educação e o debate público,
+            tornando-se referência do pensamento ocidental. Grandes nomes como Sócrates, Platão e
+            Aristóteles nasceram ou ensinaram ali, contribuindo para a construção intelectual de toda
+            a civilização ocidental. Além disso, Atenas era economicamente forte e possuía uma poderosa
+            frota naval, garantindo sua importância política e militar durante séculos.<br><br>
+            <b>Curiosidade exótica:</b> Os tribunais atenienses podiam ter mais de 500 jurados ao mesmo tempo,
+            escolhidos por sorteio diário — para evitar corrupção e garantir decisões “da vontade do povo”.
+        `,
+
+        "Esparta": `
+            Esparta era reconhecida por sua disciplina militar, educação rígida e estilo de vida austero.
+            Os espartanos valorizavam coragem, força e obediência acima de tudo. Desde jovens, os meninos eram
+            treinados no <i>agogué</i>, um sistema de formação militar considerado um dos mais duros da história.
+            Esparta possuía dois reis governando simultaneamente, além de um conselho de anciãos que tomava decisões
+            importantes. Sua força militar e organização social fizeram dela uma das potências mais temidas da Grécia.<br><br>
+            <b>Curiosidade exótica:</b> Os espartanos usavam moedas de ferro enormes e enferrujadas para desencorajar
+            a riqueza — impossibilitando qualquer tentativa de suborno, já que as moedas eram pesadas e sem valor fora da cidade.
+        `,
+
+        "Corinto": `
+            Corinto era uma das cidades-estado mais ricas e influentes da Grécia Antiga graças à sua localização estratégica.
+            Situada entre o Peloponeso e o continente, controlava rotas terrestres e marítimas, tornando-se um centro comercial
+            vital. Suas famosas cerâmicas eram exportadas para todo o Mediterrâneo. Corinto também possuía construções
+            monumentais, como o Templo de Apolo, e tinha uma forte presença naval, além de promover jogos esportivos próprios,
+            os Jogos Ístmicos.<br><br>
+            <b>Curiosidade exótica:</b> Corinto era tão próspera e cosmopolita que se dizia que seus habitantes
+            tinham mais de 1.000 templos e locais de culto — incluindo templos dedicados ao amor e à fertilidade.
+        `,
+
+        "Delfos": `
+            Delfos era considerado o centro espiritual do mundo grego e sede do famoso Oráculo de Apolo.
+            Reis, generais e cidadãos de toda a Hélade consultavam a sacerdotisa Pítia em busca de respostas
+            para decisões importantes. O santuário também abrigava tesouros, monumentos e estátuas oferecidas
+            por diversas cidades. Além disso, Delfos realizava os Jogos Píticos, competições culturais e
+            esportivas dedicadas a Apolo.<br><br>
+            <b>Curiosidade exótica:</b> Na Antiguidade acreditava-se que Delfos estava localizado exatamente
+            no “umbigo do mundo”, marcado por uma pedra sagrada chamada <i>ômphalos</i> — símbolo de conexão
+            direta com os deuses.
+        `,
+
+        "Olímpia": `
+            Olímpia era o mais importante santuário dedicado a Zeus e local de realização dos Jogos Olímpicos
+            da Antiguidade. Os gregos de todas as regiões declaravam trégua para assistir ou participar
+            das competições. A cidade também abrigava templos monumentais e a lendária estátua de Zeus,
+            considerada uma das Sete Maravilhas do Mundo Antigo. Olímpia era um local de união, devoção
+            e celebração da força física e espiritual.<br><br>
+            <b>Curiosidade exótica:</b> Os atletas competiam praticamente nus, cobertos apenas com azeite —
+            acreditava-se que isso agradava os deuses e realçava a forma física humana.
+        `,
+
+        "Tebas": `
+            Tebas foi uma das grandes potências militares da Grécia Antiga, rivalizando com Atenas e Esparta.
+            Sua força atingiu o auge sob o comando de Epaminondas, que derrotou Esparta na famosa Batalha
+            de Leuctra, quebrando séculos de supremacia espartana. Tebas também tinha importância cultural e
+            religiosa, sendo relacionada a mitos, como o de Édipo, e a figuras lendárias como Hércules.<br><br>
+            <b>Curiosidade exótica:</b> O exército tebano contava com uma unidade chamada “Batalhão Sagrado”,
+            composta por 150 pares de amantes guerreiros — acreditava-se que lutariam com mais coragem para
+            não decepcionar quem amavam.
+        `
+    };
+
+        document.querySelectorAll('.ponto-cidade').forEach(ponto => {
+            ponto.addEventListener('click', () => {
+                const cidade = ponto.dataset.cidade;
+                const painel = document.getElementById('conteudo-cidade');
+                painel.innerHTML = `<h2>${cidade}</h2><p>${textos[cidade]}</p>`;
+            });
+        });
+    </script>
+</body>
+</html>
+
